@@ -17,11 +17,20 @@ def subs():
 
 @app.route("/buying")
 def buying():
+
     return render_template("buying.html")
 
 @app.route("/dashboard")
 def dash():
-    return render_template("dash.html")
+    name = session.get('name')
+    password = session.get('password')
+    user = consumption.find_one({'_id': int(password), 'name': name})
+    d2=user['current_consumption']
+    data=d2-user['set_consumption']
+    fan=user['fan']
+    light=user['light']
+    ac=d2-(fan+light)
+    return render_template("dash.html",ussr=name, rhtm=d2, pncham=data, fa=fan,ligh=light, aa=ac)
 
 @app.route("/contact")
 def contact():
